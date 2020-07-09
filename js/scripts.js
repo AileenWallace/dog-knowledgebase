@@ -4,9 +4,9 @@ var dogRepository = (function () {
   function add(dog) {
     if (typeof dog === "object" && "name" in dog && "detailsUrl" in dog) {
       dogList.push(dog);
-    } else {
-      console.log("This is not a dog");
-    }
+    } /* else  {
+       console.log("This is not a dog");
+    } */
   }
 
   function getAll() {
@@ -22,7 +22,6 @@ var dogRepository = (function () {
     button.innerText = dog.name;
     button.classList.add("my-class");*/
     var $button = $('<button class="my-class">' + dog.name + "</button>");
-
     $listItem.append($button);
     dogList.append($listItem);
     $button.on("click", function (event) {
@@ -36,11 +35,10 @@ var dogRepository = (function () {
       showModal(item);
     });
   }
-
   function loadList() {
     return $.ajax(apiUrl)
       .then(function (json) {
-        json.message.forEach(function (item) {
+        json.results.forEach(function (message) {
           var dog = {
             name: item.name,
             detailsUrl: item.url,
@@ -59,17 +57,17 @@ var dogRepository = (function () {
     return $.ajax(url)
       .then(function (details) {
         item.imageUrl = details.sprites.front_default;
-        item.imageUrlBack = details.sprites.back_default;
-        item.height = details.height;
-        item.types = Object.keys(details.types);
+        /* item.height = details.height;
+        item.types = Object.keys(details.types); */
       })
       .catch(function (e) {
         console.error(e);
       });
   }
-  /* for (var i = 0; i < details.types.length; i++) {
+  /*  for (var i = 0; i < details.types.length; i++) {
           item.types.push(details.types[i].type.name);
         }
+        
         if (item.types.includes("grass")) {
           document.getElementById("modal-container").style.background =
             "lightgreen";
@@ -101,20 +99,24 @@ var dogRepository = (function () {
         item.weight = details.weight;
       }) */
 
+  /* .catch(function(e) {
+        console.error(e);
+      });
+    } */
+
   function showModal(item) {
     var $modalContainer = $("#modal-container");
     // clear all existing modal content
     $modalContainer.empty();
 
     var modal = $('div class="modal"></div>');
-
     //add the new modal content
     var closeButtonElement = $('<button class="modal-close">Close</button>');
     closeButtonElement.on("click", hideModal);
 
     var nameElement = $("<h1>" + item.name + "</h1>");
 
-    var imageElement = $('<img class"modal-img">');
+    /* var imageElement = $('<img class"modal-img">');
     imageElement.attr("src", item.imageUrl);
 
     var imageElementBack = $('<img class"modal-img">');
@@ -127,15 +129,15 @@ var dogRepository = (function () {
     var typesElement = $("<p>" + "types : " + item.types + "</p>");
 
     var abilitiesElement = $("<p>" + "abilities : " + item.abilities + "</p>");
-
+*/
     modal.append(closeButtonElement);
     modal.append(nameElement);
-    modal.append(imageElement);
+    /*modal.append(imageElement);
     modal.append(imageElementBack);
     modal.append(heightElement);
     modal.append(weightElement);
     modal.append(typesElement);
-    modal.append(abilitiesElement);
+    modal.append(abilitiesElement); */
     $modalContainer.append(modal);
     $modalContainer.addClass("is-visible");
   }
